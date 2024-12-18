@@ -1,38 +1,22 @@
-services:
-  front-end:
-    build:
-      context: ./front-end
-      dockerfile: Dockerfile
-    image: softy-pinko-front-end:task3
-    ports:
-      - "9000:9000"
-    volumes:
-      - ./front-end:/var/www/html/softy-pinko-front-end
-    depends_on:
-      - back-end
+version: '3.8'
 
+services:
   back-end:
     build:
       context: ./back-end
       dockerfile: Dockerfile
-    image: softy-pinko-back-end:task3
     ports:
-      - "8000:8000"
+      - "5252:5252"
     volumes:
       - ./back-end:/app
-    environment:
-      - DATABASE_URL=postgres://user:password@db:5432/mydatabase
-    depends_on:
-      - db
+    container_name: back-end
 
-  db:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydatabase
+  front-end:
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
     volumes:
-      - db_data:/var/lib/postgresql/data
-
-volumes:
-  db_data:
+      - ./front-end:/var/www/html
+    container_name: front-end
